@@ -1,14 +1,15 @@
 import express from 'express'
 import { uploadImage, uploadPdf } from './multer.js'
-import { deleteArhivo, getImagen, getImagenes, getPdf, subirImagen, subirPdf } from './controller.js'
+import { deleteArchivo, getImagen, getImagenes, getPdf, subirImagen, subirPdf } from './controller.js'
 import { manejarErrorArchivo } from './helpers.js'
+import { PORT, originsAllowed } from './config.js'
 
 const app = express()
 
 app.use((req, res, next) => {
   const { origin } = req.headers
 
-  if (origin === 'http://127.0.0.1:5500' || origin === undefined) {
+  if (originsAllowed.includes(origin) || origin === undefined) {
     res.setHeader('Access-Control-Allow-Origin', origin ?? '*')
     next()
   }
@@ -32,6 +33,6 @@ app.post(
   manejarErrorArchivo
 )
 
-app.delete('/archivo/:tipo/:nombre', deleteArhivo)
+app.delete('/archivo/:tipo/:nombre', deleteArchivo)
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'))
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
