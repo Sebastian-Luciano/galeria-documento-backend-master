@@ -1,14 +1,15 @@
 import multer from 'multer'
 
 export let nuevoNombreArchivo = null
+export let nuevoNombreImagen = null
 
 const storageImage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './uploads/img')
   },
   filename: function (req, file, cb) {
-    nuevoNombreArchivo = `${Date.now()}-${file.originalname}`
-    cb(null, nuevoNombreArchivo)
+    nuevoNombreImagen = `${Date.now()}-${file.originalname}`
+    cb(null, nuevoNombreImagen)
   }
 })
 

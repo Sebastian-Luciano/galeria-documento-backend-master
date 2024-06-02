@@ -1,6 +1,6 @@
 import path from 'node:path'
 import fs from 'node:fs/promises'
-import { nuevoNombreArchivo } from './multer.js'
+import { nuevoNombreArchivo, nuevoNombreImagen } from './multer.js'
 import { pool } from './db.js'
 
 export const getImagenes = async (req, res) => {
@@ -48,13 +48,11 @@ export const getPdf = async (req, res) => {
 
 export const subirImagen = async (req, res) => {
   try {
-    const { user } = req.body
-
-    if (nuevoNombreArchivo === null) {
+    if (nuevoNombreImagen === null) {
       return res.status(500).json({ message: 'No se pudo subir la imagen' })
     }
 
-    const [resultado] = await pool.execute('INSERT INTO imagenes(imagen, usuario) VALUES (?, ?)', [nuevoNombreArchivo, user])
+    const [resultado] = await pool.execute('INSERT INTO imagenes(imagen, usuario) VALUES (?, "Juan")', [nuevoNombreImagen])
 
     if (resultado.affectedRows === 1) {
       return res.status(201).json({ message: 'Se guardó la imagen correctamente' })
